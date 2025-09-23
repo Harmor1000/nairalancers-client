@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
-import "./utils/testWebSocket.js"; // Import WebSocket test
-import WebSocketDebugger from "./components/WebSocketDebugger";
 import NotificationSystem from "./components/NotificationSystem";
+import ScrollToTop from "./components/ScrollToTop";
 import { ToastProvider } from "./components/toast/ToastProvider";
 import socketService from "./services/socketService";
 import activityTracker from "./services/activityTracker";
@@ -133,6 +132,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <ToastProvider>
             <Navbar></Navbar>
+            <ScrollToTop />
             <Outlet></Outlet>
             {/* Global in-app notification toasts */}
             <NotificationSystem currentUser={getCurrentUser()} />
@@ -358,7 +358,6 @@ function App() {
   return (
     <div>
       <RouterProvider router={router} />
-      <WebSocketDebugger currentUser={getCurrentUser()} />
     </div>
   );
 }

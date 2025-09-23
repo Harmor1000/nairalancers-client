@@ -5,11 +5,23 @@ import './NotificationSystem.scss';
 const NotificationSystem = ({ currentUser }) => {
   const [notifications, setNotifications] = useState([]);
   const [permissionGranted, setPermissionGranted] = useState(false);
+  const [permissionStatus, setPermissionStatus] = useState('default'); // 'default' | 'granted' | 'denied' | 'unsupported'
+  const [bannerDismissed, setBannerDismissed] = useState(false);
 
   useEffect(() => {
+    // Initialize permission and banner dismissal state
+    try {
+      const storedDismiss = typeof window !== 'undefined' ? localStorage.getItem('nl_notify_dismissed') : null;
+      if (storedDismiss === '1') setBannerDismissed(true);
+    } catch (_) {}
+
     // Check notification permission
     if ('Notification' in window) {
-      setPermissionGranted(Notification.permission === 'granted');
+      const status = Notification.permission;
+      setPermissionStatus(status);
+      setPermissionGranted(status === 'granted');
+    } else {
+      setPermissionStatus('unsupported');
     }
 
     // Subscribe to notifications from socket
@@ -101,19 +113,59 @@ const NotificationSystem = ({ currentUser }) => {
   };
 
   const requestNotificationPermission = async () => {
-    if ('Notification' in window && Notification.permission === 'default') {
+    try {
+      if (typeof window === 'undefined') return;
+
+      // Notifications require HTTPS on most browsers
+      if (window.location.protocol !== 'https:') {
+        // Guide user and allow dismiss so the banner doesn't stick
+        alert('Browser notifications require HTTPS. Please use https://nairalancers.com');
+        setBannerDismissed(true);
+        try { localStorage.setItem('nl_notify_dismissed', '1'); } catch (_) {}
+        return;
+      }
+
+      if (!('Notification' in window)) {
+        // Not supported
+        setPermissionStatus('unsupported');
+        setBannerDismissed(true);
+        try { localStorage.setItem('nl_notify_dismissed', '1'); } catch (_) {}
+        return;
+      }
+
       const permission = await Notification.requestPermission();
-      setPermissionGranted(permission === 'granted');
+      setPermissionStatus(permission);
+      const granted = permission === 'granted';
+      setPermissionGranted(granted);
+      if (!granted) {
+        // Keep banner visible so the user can try again or dismiss
+      }
+    } catch (e) {
+      // On any error, let user dismiss
+      setBannerDismissed(true);
+      try { localStorage.setItem('nl_notify_dismissed', '1'); } catch (_) {}
     }
   };
 
   return (
     <div className="notification-system">
       {/* Notification Permission Banner */}
-      {!permissionGranted && (
+      {!permissionGranted && !bannerDismissed && (
         <div className="notification-permission-banner">
           <p>Enable notifications to stay updated with new messages</p>
           <button onClick={requestNotificationPermission}>Enable Notifications</button>
+          <button
+            className="dismiss-btn"
+            onClick={() => {
+              setBannerDismissed(true);
+              try { localStorage.setItem('nl_notify_dismissed', '1'); } catch (_) {}
+            }}
+          >
+            Not now
+          </button>
+          {permissionStatus === 'denied' && (
+            <p className="note">Notifications are blocked in your browser. You can enable them from site settings.</p>
+          )}
         </div>
       )}
 
