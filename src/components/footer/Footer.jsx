@@ -95,25 +95,25 @@ const Footer = () => {
             <h3>Popular Services</h3>
             <ul>
               <li>
-                <Link to="/gigs?cat=graphics-design">Graphics & Design</Link>
+                <Link to="/gigs?cat=Graphics%20%26%20Design">Graphics & Design</Link>
               </li>
               <li>
-                <Link to="/gigs?category=writing-translation">
+                <Link to="/gigs?cat=Writing%20%26%20Translation">
                   Writing & Translation
                 </Link>
               </li>
               <li>
-                <Link to="/gigs?category=programming-tech">
+                <Link to="/gigs?cat=Programming%20%26%20Tech">
                   Programming & Tech
                 </Link>
               </li>
               <li>
-                <Link to="/gigs?category=digital-marketing">
+                <Link to="/gigs?cat=Digital%20Marketing">
                   Digital Marketing
                 </Link>
               </li>
               <li>
-                <Link to="/gigs?category=video-animation">
+                <Link to="/gigs?cat=Video%20%26%20Animation">
                   Video & Animation
                 </Link>
               </li>
@@ -273,9 +273,9 @@ const Footer = () => {
               <Link to="/cookie-policy">Cookie Policy</Link>
               <Link to="/intellectual-property">IP Policy</Link>
             </div>
-            <div className="footer-meta">
+            {/* <div className="footer-meta">
               <span>Made with ❤️ in Nigeria</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
