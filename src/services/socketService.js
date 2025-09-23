@@ -23,10 +23,18 @@ class SocketService {
     
     try {
       // Prefer explicit WebSocket URL, then fall back to API URL
-      const WS_URL = (import.meta?.env?.VITE_WS_URL) 
-        || (import.meta?.env?.VITE_API_URL) 
-        || 'http://localhost:8800';
-      this.socket = io(WS_URL, {
+      const host = typeof window !== 'undefined' ? window.location.hostname : '';
+      const isProdHost = /(?:^|\.)nairalancers\.com$/.test(host);
+      const envWs = import.meta?.env?.VITE_WS_URL;
+      const envApi = import.meta?.env?.VITE_API_URL;
+      const pickNonLocal = (u) => (u && !/^https?:\/\/localhost(?::\d+)?/i.test(u)) ? u : null;
+      const RESOLVED_WS = (() => {
+        if (isProdHost) {
+          return pickNonLocal(envWs) || pickNonLocal(envApi) || 'https://api.nairalancers.com';
+        }
+        return envWs || envApi || 'http://localhost:8800';
+      })();
+      this.socket = io(RESOLVED_WS, {
         auth: {
           token: localStorage.getItem('token')
         },
