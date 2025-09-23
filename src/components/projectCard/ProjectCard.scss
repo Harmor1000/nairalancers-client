@@ -1,0 +1,134 @@
+.projectCard {
+    width: 100%;
+    max-width: 320px;
+    height: 350px;
+    border-radius: 16px;
+    cursor: pointer;
+    background: white;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+
+    &:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        border-color: rgba(29, 191, 115, 0.2);
+    }
+
+    img {
+        width: 100%;
+        height: 240px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    &:hover img {
+        transform: scale(1.05);
+    }
+
+    .info {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 20px;
+        height: 110px;
+        background: white;
+
+        img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #f1f5f9;
+            transition: border-color 0.3s ease;
+        }
+
+        .texts {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+
+            h2 {
+                font-size: 16px;
+                font-weight: 600;
+                color: #1e293b;
+                margin: 0;
+                line-height: 1.3;
+            }
+
+            span {
+                font-size: 14px;
+                color: #64748b;
+                font-weight: 400;
+            }
+        }
+    }
+
+    &:hover .info img {
+        border-color: #1dbf73;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        max-width: 100%;
+        height: 320px;
+        border-radius: 12px;
+
+        img {
+            height: 210px;
+        }
+
+        .info {
+            padding: 16px;
+            height: 110px;
+            gap: 12px;
+
+            img {
+                width: 42px;
+                height: 42px;
+            }
+
+            .texts {
+                h2 {
+                    font-size: 15px;
+                }
+
+                span {
+                    font-size: 13px;
+                }
+            }
+        }
+    }
+
+    @media (max-width: 480px) {
+        height: 280px;
+        border-radius: 10px;
+
+        img {
+            height: 180px;
+        }
+
+        .info {
+            padding: 12px;
+            height: 100px;
+            gap: 10px;
+
+            img {
+                width: 36px;
+                height: 36px;
+            }
+
+            .texts {
+                h2 {
+                    font-size: 14px;
+                }
+
+                span {
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+}

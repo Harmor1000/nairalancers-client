@@ -1,0 +1,297 @@
+.admin-reports {
+  .page-header {
+    margin-bottom: 2rem;
+    
+    h1 {
+      font-size: 2rem;
+      color: #1f2937;
+      margin-bottom: 0.5rem;
+    }
+    
+    p {
+      color: #6b7280;
+      font-size: 1rem;
+    }
+  }
+
+  .controls-section {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 1.5rem;
+
+    .controls-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto auto;
+      gap: 1rem;
+      align-items: center;
+
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+      }
+
+      select {
+        padding: 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        background: white;
+        font-size: 1rem;
+        cursor: pointer;
+
+        &:focus {
+          outline: none;
+          border-color: #3b82f6;
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+      }
+
+      .export-btn,
+      .refresh-btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+
+      .export-btn {
+        background: #10b981;
+        color: white;
+
+        &:hover:not(:disabled) {
+          background: #059669;
+          transform: translateY(-1px);
+        }
+      }
+
+      .refresh-btn {
+        background: #3b82f6;
+        color: white;
+
+        &:hover:not(:disabled) {
+          background: #2563eb;
+          transform: translateY(-1px);
+        }
+      }
+    }
+  }
+
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #e5e7eb;
+      border-left-color: #3b82f6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: #6b7280;
+      font-size: 1.1rem;
+    }
+  }
+
+  .reports-content {
+    .report-section {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      padding: 2rem;
+
+      h2 {
+        color: #1f2937;
+        margin-bottom: 2rem;
+        font-size: 1.5rem;
+        border-bottom: 2px solid #e5e7eb;
+        padding-bottom: 0.5rem;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+
+        .stat-card {
+          background: #f8fafc;
+          padding: 1.5rem;
+          border-radius: 8px;
+          border-left: 4px solid #3b82f6;
+          position: relative;
+
+          h3 {
+            color: #6b7280;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 0 0 0.5rem 0;
+            font-weight: 600;
+          }
+
+          .stat-value {
+            color: #1f2937;
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.1;
+          }
+
+          .stat-growth {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+
+            &.positive {
+              background: #dcfce7;
+              color: #166534;
+            }
+
+            &.negative {
+              background: #fecaca;
+              color: #991b1b;
+            }
+          }
+        }
+      }
+
+      .chart-section {
+        margin-top: 2rem;
+
+        h3 {
+          color: #374151;
+          margin-bottom: 1rem;
+          font-size: 1.25rem;
+        }
+
+        .table-container {
+          overflow-x: auto;
+          border-radius: 8px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+
+            thead {
+              background: #f9fafb;
+              
+              th {
+                padding: 1rem;
+                text-align: left;
+                font-weight: 600;
+                color: #374151;
+                border-bottom: 1px solid #e5e7eb;
+              }
+            }
+
+            tbody {
+              tr {
+                border-bottom: 1px solid #e5e7eb;
+                transition: background-color 0.2s;
+
+                &:hover {
+                  background: #f9fafb;
+                }
+
+                td {
+                  padding: 1rem;
+                  color: #374151;
+
+                  &:first-child {
+                    font-weight: 500;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        .health-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 1rem;
+
+          .health-item {
+            padding: 1rem;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e5e7eb;
+
+            &.healthy {
+              background: #f0fdf4;
+              border-color: #bbf7d0;
+            }
+
+            &.warning {
+              background: #fffbeb;
+              border-color: #fde68a;
+            }
+
+            &.error {
+              background: #fef2f2;
+              border-color: #fecaca;
+            }
+
+            .system-name {
+              font-weight: 600;
+              color: #374151;
+            }
+
+            .status-badge {
+              padding: 0.25rem 0.75rem;
+              border-radius: 15px;
+              font-size: 0.75rem;
+              font-weight: 600;
+
+              &.healthy {
+                background: #dcfce7;
+                color: #166534;
+              }
+
+              &.warning {
+                background: #fef3c7;
+                color: #92400e;
+              }
+
+              &.error {
+                background: #fecaca;
+                color: #991b1b;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

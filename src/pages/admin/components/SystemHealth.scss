@@ -1,0 +1,318 @@
+// System Health Component Styles
+.system-health {
+  &.loading {
+    .health-skeleton {
+      .skeleton-item {
+        height: 40px;
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+        border-radius: 8px;
+        margin-bottom: 12px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  .health-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .last-update {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 500;
+    }
+  }
+
+  .overall-health {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+
+    .health-indicator {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: 0.2;
+        animation: health-pulse 2s infinite;
+      }
+
+      .health-icon {
+        font-size: 24px;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+      }
+    }
+
+    .health-info {
+      flex: 1;
+
+      .health-status {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 4px;
+
+        .status-text {
+          font-size: 18px;
+          font-weight: 700;
+          letter-spacing: 0.5px;
+        }
+
+        .health-score {
+          font-size: 14px;
+          font-weight: 600;
+          color: #64748b;
+          padding: 4px 8px;
+          background: white;
+          border-radius: 6px;
+          border: 1px solid #e2e8f0;
+        }
+      }
+
+      .health-description {
+        font-size: 14px;
+        color: #64748b;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .health-metrics {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+
+    .metric-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+      }
+
+      .metric-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .metric-icon {
+          font-size: 16px;
+        }
+
+        .metric-label {
+          font-size: 14px;
+          font-weight: 500;
+          color: #475569;
+        }
+      }
+
+      .metric-value {
+        .status {
+          font-size: 12px;
+          font-weight: 600;
+          padding: 4px 8px;
+          border-radius: 12px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+
+          &.healthy {
+            background: #d1fae5;
+            color: #065f46;
+          }
+
+          &.critical {
+            background: #fee2e2;
+            color: #991b1b;
+          }
+        }
+
+        .uptime {
+          font-weight: 700;
+          color: #10b981;
+        }
+
+        .count {
+          font-weight: 600;
+          color: #1e293b;
+
+          &.warning {
+            color: #d97706;
+          }
+
+          &.critical {
+            color: #dc2626;
+          }
+
+          &.healthy {
+            color: #059669;
+          }
+        }
+      }
+    }
+  }
+
+  .health-actions {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+
+    .action-btn {
+      flex: 1;
+      padding: 10px 12px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: #e2e8f0;
+        color: #1e293b;
+        transform: translateY(-1px);
+      }
+
+      &.critical {
+        background: #fee2e2;
+        border-color: #fecaca;
+        color: #dc2626;
+
+        &:hover {
+          background: #fecaca;
+        }
+      }
+    }
+  }
+
+  .status-bar {
+    width: 100%;
+    height: 6px;
+    background: #f1f5f9;
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+
+    .status-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.8s ease;
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        animation: progress-shine 2s infinite;
+      }
+    }
+  }
+
+  // Responsive Design
+  @media (max-width: 768px) {
+    .overall-health {
+      flex-direction: column;
+      text-align: center;
+      gap: 12px;
+
+      .health-info {
+        .health-status {
+          justify-content: center;
+        }
+      }
+    }
+
+    .health-actions {
+      flex-direction: column;
+
+      .action-btn {
+        padding: 12px;
+        font-size: 14px;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .health-header {
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+    }
+
+    .health-metrics {
+      .metric-item {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+
+        .metric-header {
+          justify-content: center;
+        }
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes loading {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes health-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.1;
+  }
+}
+
+@keyframes progress-shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}

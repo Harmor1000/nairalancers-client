@@ -1,0 +1,185 @@
+.user-status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .status-dot {
+    position: relative;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    .pulse-ring {
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      border-radius: 50%;
+      border: 2px solid;
+      animation: pulse 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+      opacity: 0;
+    }
+  }
+
+  .status-text {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #64748b;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+  }
+
+  // Size variants
+  &.status-small {
+    .status-dot {
+      width: 8px;
+      height: 8px;
+    }
+
+    .status-text {
+      font-size: 0.75rem;
+    }
+  }
+
+  &.status-medium {
+    .status-dot {
+      width: 12px;
+      height: 12px;
+    }
+
+    .status-text {
+      font-size: 0.8rem;
+    }
+  }
+
+  &.status-large {
+    gap: 0.75rem;
+
+    .status-dot {
+      width: 16px;
+      height: 16px;
+    }
+
+    .status-text {
+      font-size: 0.9rem;
+    }
+  }
+
+  // Status-specific styling
+  &.online {
+    .status-text {
+      color: #059669;
+    }
+  }
+
+  &.away {
+    .status-text {
+      color: #d97706;
+    }
+  }
+
+  &.busy {
+    .status-text {
+      color: #dc2626;
+    }
+  }
+
+  &.offline {
+    .status-text {
+      color: #6b7280;
+    }
+  }
+
+  &.loading {
+    .status-dot {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .status-text {
+      color: #9ca3af;
+    }
+  }
+}
+
+// Pulse animation for online users
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+// Loading pulse animation
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .user-status-indicator {
+    &.status-small {
+      .status-dot {
+        width: 10px;
+        height: 10px;
+      }
+    }
+
+    &.status-medium {
+      .status-dot {
+        width: 14px;
+        height: 14px;
+      }
+    }
+
+    &.status-large {
+      .status-dot {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .user-status-indicator {
+    .status-dot {
+      border-color: #374151;
+    }
+
+    .status-text {
+      color: #d1d5db;
+    }
+
+    &.online .status-text {
+      color: #34d399;
+    }
+
+    &.away .status-text {
+      color: #fbbf24;
+    }
+
+    &.busy .status-text {
+      color: #f87171;
+    }
+
+    &.offline .status-text {
+      color: #9ca3af;
+    }
+
+    &.loading .status-text {
+      color: #6b7280;
+    }
+  }
+}

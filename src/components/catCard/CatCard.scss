@@ -1,0 +1,114 @@
+.CatCard {
+    width: 100%;
+    max-width: 280px;
+    height: 350px;
+    color: white;
+    border-radius: 16px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+
+    &:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+            180deg,
+            transparent 0%,
+            transparent 40%,
+            rgba(0, 0, 0, 0.3) 70%,
+            rgba(0, 0, 0, 0.8) 100%
+        );
+        z-index: 1;
+        transition: opacity 0.3s ease;
+    }
+
+    &:hover::before {
+        opacity: 0.9;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    &:hover img {
+        transform: scale(1.1);
+    }
+
+    .desc {
+        font-weight: 400;
+        font-size: 14px;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        z-index: 2;
+        opacity: 0.9;
+        line-height: 1.4;
+    }
+
+    .title {
+        font-weight: 600;
+        font-size: 24px;
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+        z-index: 2;
+        line-height: 1.2;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        max-width: 100%;
+        height: 300px;
+        border-radius: 12px;
+
+        .desc {
+            font-size: 13px;
+            top: 16px;
+            left: 16px;
+            right: 16px;
+        }
+
+        .title {
+            font-size: 20px;
+            left: 16px;
+            right: 16px;
+            bottom: 16px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        height: 250px;
+        border-radius: 10px;
+
+        .desc {
+            font-size: 12px;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+        }
+
+        .title {
+            font-size: 18px;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+        }
+    }
+}

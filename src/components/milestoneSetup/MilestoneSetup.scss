@@ -1,0 +1,292 @@
+.milestone-setup {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 800px;
+  margin: 0 auto;
+  color: #333;
+
+  .setup-header {
+    text-align: center;
+    margin-bottom: 30px;
+
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+      margin: 0 0 10px 0;
+    }
+
+    p {
+      color: #666;
+      font-size: 16px;
+      margin: 0 0 20px 0;
+    }
+
+    .order-info {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      font-size: 14px;
+      
+      span {
+        color: #666;
+        
+        strong {
+          color: #333;
+        }
+      }
+    }
+  }
+
+  .milestones-container {
+    margin-bottom: 30px;
+  }
+
+  .milestone-form {
+    border: 2px solid #e8e8e8;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    background: #f8f9fa;
+
+    .milestone-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+
+      h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+      }
+
+      .remove-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: rgba(211, 47, 47, 0.1);
+        }
+      }
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .form-group {
+        &.full-width {
+          grid-column: 1 / -1;
+        }
+
+        label {
+          display: block;
+          margin-bottom: 6px;
+          font-weight: 600;
+          color: #333;
+          font-size: 14px;
+        }
+
+        input,
+        textarea {
+          width: 100%;
+          padding: 12px;
+          border: 2px solid #e8e8e8;
+          border-radius: 6px;
+          font-size: 14px;
+          transition: border-color 0.3s ease;
+
+          &:focus {
+            outline: none;
+            border-color: #1dbf73;
+          }
+
+          &::placeholder {
+            color: #999;
+          }
+        }
+
+        textarea {
+          resize: vertical;
+          min-height: 80px;
+        }
+      }
+    }
+  }
+
+  .milestone-actions {
+    text-align: center;
+    margin-bottom: 30px;
+
+    .add-milestone-btn {
+      background: #e3f2fd;
+      color: #1976d2;
+      border: 2px solid #1976d2;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: #1976d2;
+        color: white;
+      }
+    }
+  }
+
+  .milestone-summary {
+    background: #f8f9fa;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 16px;
+
+      &:last-of-type {
+        margin-bottom: 0;
+        font-weight: 600;
+        font-size: 18px;
+        padding-top: 10px;
+        border-top: 1px solid #e8e8e8;
+      }
+
+      span {
+        &.correct {
+          color: #388e3c;
+          font-weight: 600;
+        }
+
+        &.incorrect {
+          color: #d32f2f;
+          font-weight: 600;
+        }
+      }
+    }
+
+    .warning {
+      background: rgba(255, 152, 0, 0.1);
+      color: #f57c00;
+      padding: 10px 15px;
+      border-radius: 6px;
+      margin-top: 15px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+    }
+  }
+
+  .setup-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-bottom: 30px;
+
+    @media (max-width: 480px) {
+      flex-direction: column;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      &.primary {
+        background: #1dbf73;
+        color: white;
+
+        &:hover:not(:disabled) {
+          background: #17a862;
+        }
+      }
+
+      &.secondary {
+        background: #e8e8e8;
+        color: #333;
+
+        &:hover {
+          background: #ddd;
+        }
+      }
+    }
+  }
+
+  .milestone-benefits {
+    background: rgba(29, 191, 115, 0.05);
+    border: 1px solid rgba(29, 191, 115, 0.2);
+    border-radius: 8px;
+    padding: 20px;
+
+    h4 {
+      color: #1dbf73;
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 15px 0;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 20px;
+      color: #17a862;
+
+      li {
+        font-size: 14px;
+        margin-bottom: 8px;
+        line-height: 1.4;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  // Responsive Design
+  @media (max-width: 768px) {
+    padding: 20px;
+
+    .setup-header .order-info {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .milestone-form {
+      padding: 20px;
+    }
+
+    .setup-footer .btn {
+      width: 100%;
+    }
+  }
+}

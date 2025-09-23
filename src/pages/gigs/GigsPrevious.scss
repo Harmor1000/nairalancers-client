@@ -1,0 +1,154 @@
+.gigs {
+    display: flex;
+    justify-content: center;
+  
+    .container {
+      width: 1400px;
+      padding: 30px 0px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+  
+      .breadcrumbs {
+    font-weight: 400;
+    font-size: 13px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+  
+  .breadcrumbs a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s ease;
+  }
+  
+  .breadcrumbs a:hover {
+    color: #1dbf73;
+  }
+  
+  .breadcrumb-separator {
+    color: #999;
+  }
+  
+      p {
+        color: #999;
+        font-weight: 300;
+      }
+  
+      .menu {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+  
+        .left {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          color: #555;
+          font-weight: 300;
+  
+          input {
+            padding: 5px;
+            border: 1px solid lightgray;
+            outline: none;
+  
+            &::placeholder {
+              color: gray;
+            }
+          }
+  
+          button {
+            background-color: #1dbf73;
+            color: white;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 5px;
+          }
+          .clear-btn {
+            //   position: absolute;
+            //   top: 50%;
+            //   right: 6px;
+            //   transform: translateY(-50%);
+            background: #ccc;
+            border: none;
+            //   border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            color: red;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 16px;
+            text-align: center;
+            padding: 0;
+            user-select: none;
+            transition: background-color 0.2s ease;
+  
+            &:hover {
+              background-color: #888;
+              color: white;
+            }
+          }
+          .validation-error {
+            color: #d93025; // red color
+            font-size: 0.85rem;
+            margin-top: 5px;
+            font-weight: 500;
+          }
+        }
+        .right {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          position: relative;
+  
+          .sortBy {
+            color: #555;
+            font-weight: 300;
+          }
+  
+          .sortType {
+            font-weight: 500;
+          }
+  
+          img {
+            width: 15px;
+            cursor: pointer;
+          }
+  
+          .rightMenu {
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            border: 0.5px solid lightgrey;
+            position: absolute;
+            top: 30px;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            color: #555;
+  
+            span {
+              cursor: pointer;
+            }
+          }
+  
+          
+        }
+        
+      }
+      .cards {
+        display: flex;
+        flex-wrap: wrap;
+        // justify-content: space-between;
+        justify-content: flex-start; /* Align cards to the left */
+        gap: 25px 20px; /* vertical and horizontal spacing */
+      }
+    }
+  }
+  
