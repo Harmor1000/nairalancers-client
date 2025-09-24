@@ -4,7 +4,7 @@ import newRequest from "../../utils/newRequest";
 import { useNavigate, Link, Navigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup, signInWithRedirect, getRedirectResult } from "firebase/auth";
 import { auth, googleProvider } from "../../firebase"; // Adjust path as needed
 import getCurrentUser from "../../utils/getCurrentUser";
 
@@ -104,6 +104,48 @@ const Register = () => {
       }
     }
   }, [location.state]);
+
+  // Handle Google sign-up redirect result (fallback when popup is blocked)
+  useEffect(() => {
+    getRedirectResult(auth)
+      .then(async (result) => {
+        if (result?.user) {
+          setLoading(true);
+          setErrors({});
+          try {
+            const idToken = await result.user.getIdToken();
+            // Retrieve role saved before redirect (or fallback to current state)
+            const savedRole = sessionStorage.getItem('nairalancers_google_role');
+            const effectiveRole = savedRole || role;
+
+            const response = await newRequest.post("/auth/google", {
+              idToken,
+              role: effectiveRole,
+            });
+
+            // Store user data and token
+            localStorage.setItem("currentUser", JSON.stringify(response.data));
+            if (response.data.token) {
+              localStorage.setItem("token", response.data.token);
+            }
+
+            // Clean up saved role
+            if (savedRole) sessionStorage.removeItem('nairalancers_google_role');
+
+            // Navigate to home page
+            navigate("/");
+          } catch (err) {
+            console.error("Google redirect sign up error:", err);
+            setErrors({ general: err.response?.data?.message || "Google sign up failed. Please try again." });
+          } finally {
+            setLoading(false);
+          }
+        }
+      })
+      .catch((err) => {
+        console.error("Google sign up redirect result error:", err);
+      });
+  }, [navigate, role]);
 
   // Save data to sessionStorage whenever it changes
   useEffect(() => {
@@ -245,7 +287,15 @@ const Register = () => {
       if (error.code === 'auth/popup-closed-by-user') {
         setErrors({ general: "Sign-up was cancelled. Please try again." });
       } else if (error.code === 'auth/popup-blocked') {
-        setErrors({ general: "Popup was blocked. Please enable popups for this site." });
+        try {
+          // Save intended role, then fall back to redirect if popup is blocked
+          sessionStorage.setItem('nairalancers_google_role', role);
+          await signInWithRedirect(auth, googleProvider);
+          return; // Flow will continue in getRedirectResult useEffect after redirect
+        } catch (redirectErr) {
+          console.error("Google sign up redirect fallback error:", redirectErr);
+          setErrors({ general: "Popup was blocked and redirect failed. Please try again." });
+        }
       } else if (error.code === 'auth/cancelled-popup-request') {
         // User cancelled - don't show error
         return;

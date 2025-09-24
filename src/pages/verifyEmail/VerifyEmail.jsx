@@ -10,7 +10,7 @@ const VerifyEmail = () => {
   // Get email and registration data from location state (passed from registration)
   const initialEmail = location.state?.email || '';
   const firstname = location.state?.firstname || '';
-  const registrationData = location.state?.registrationData || null;
+  const [regData, setRegData] = useState(location.state?.registrationData || null);
   
   const [email, setEmail] = useState(initialEmail);
   const [showChangeEmail, setShowChangeEmail] = useState(false);
@@ -37,6 +37,31 @@ const VerifyEmail = () => {
       return () => clearTimeout(timer);
     }
   }, [timeLeft]);
+
+  // Attempt to restore registration data from sessionStorage if missing (e.g., after refresh)
+  useEffect(() => {
+    if (!regData) {
+      try {
+        const saved = sessionStorage.getItem('nairalancers_registration_data');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed?.formData) {
+            const rebuilt = {
+              ...parsed.formData,
+              role: parsed.role,
+              isSeller: parsed.role === 'freelancer',
+            };
+            setRegData(rebuilt);
+            if (!email && parsed.formData.email) {
+              setEmail(parsed.formData.email);
+            }
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to load registration data from session storage:', e);
+      }
+    }
+  }, [regData, email]);
 
   // Format time display
   const formatTime = (seconds) => {
@@ -120,9 +145,26 @@ const VerifyEmail = () => {
 
     } catch (err) {
       console.error('Resend error:', err);
-      const errorMessage = err.response?.data?.message || 
-                          'Failed to resend code. Please try again.';
-      setError(errorMessage);
+      const serverMsg = err.response?.data?.message || err.response?.data;
+      if (err.response?.status === 400 && serverMsg?.toString().toLowerCase().includes('no active verification request')) {
+        // No active request on server (e.g., after restart). Try to recreate it using saved registration data
+        try {
+          const payload = {
+            email: email,
+            firstname: firstname || regData?.firstname || 'User',
+            registrationData: regData || null,
+          };
+          await newRequest.post('/registration-verification/request', payload);
+          setMessage('A new verification code has been sent to your email.');
+          setTimeLeft(600);
+        } catch (reqErr) {
+          console.error('Re-request verification failed:', reqErr);
+          setError(reqErr.response?.data?.message || 'No active verification session. Please go back and restart registration.');
+        }
+      } else {
+        const errorMessage = serverMsg || 'Failed to resend code. Please try again.';
+        setError(errorMessage);
+      }
     } finally {
       setResending(false);
     }
@@ -164,7 +206,7 @@ const VerifyEmail = () => {
       const response = await newRequest.post('/registration-verification/change-email', {
         oldEmail: email,
         newEmail: newEmail,
-        registrationData: registrationData
+        registrationData: regData
       });
 
       setMessage(response.data.message);
@@ -189,7 +231,7 @@ const VerifyEmail = () => {
     navigate('/register', {
       state: {
         preserveData: true,
-        registrationData: registrationData
+        registrationData: regData
       }
     });
   };

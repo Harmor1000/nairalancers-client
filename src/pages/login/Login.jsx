@@ -3,7 +3,7 @@ import "./Login.scss";
 import newRequest from '../../utils/newRequest';
 import { useNavigate, Link, useLocation, Navigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup, signInWithRedirect, getRedirectResult } from "firebase/auth";
 import { auth, googleProvider } from "../../firebase"; // Adjust path as needed
 import getCurrentUser from '../../utils/getCurrentUser';
 
@@ -37,6 +37,47 @@ function Login() {
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
+
+  // Handle Google sign-in redirect result (fallback when popup is blocked)
+  useEffect(() => {
+    getRedirectResult(auth)
+      .then(async (result) => {
+        if (result?.user) {
+          setIsLoading(true);
+          setError(null);
+          try {
+            const idToken = await result.user.getIdToken();
+            const response = await newRequest.post("/auth/google", {
+              idToken,
+            });
+
+            // Store user data and token
+            localStorage.setItem("currentUser", JSON.stringify(response.data));
+            if (response.data.token) {
+              localStorage.setItem("token", response.data.token);
+            }
+
+            // Navigate based on role
+            if (response.data.isSeller) {
+              navigate("/freelancer-dashboard");
+            } else {
+              navigate("/");
+            }
+          } catch (err) {
+            console.error("Google redirect sign in error:", err);
+            setError(
+              err.response?.data?.message ||
+                "Google sign in failed. Please try again."
+            );
+          } finally {
+            setIsLoading(false);
+          }
+        }
+      })
+      .catch((err) => {
+        console.error("Google redirect result error:", err);
+      });
+  }, [navigate]);
 
   // Real-time field validation
   const validateField = (fieldName, value) => {
@@ -143,7 +184,14 @@ function Login() {
       if (error.code === 'auth/popup-closed-by-user') {
         setError("Sign-in was cancelled. Please try again.");
       } else if (error.code === 'auth/popup-blocked') {
-        setError("Popup was blocked. Please enable popups for this site.");
+        try {
+          // Fall back to redirect if popup is blocked
+          await signInWithRedirect(auth, googleProvider);
+          return; // Flow will continue in getRedirectResult useEffect after redirect
+        } catch (redirectErr) {
+          console.error("Google sign in redirect fallback error:", redirectErr);
+          setError("Popup was blocked and redirect failed. Please try again.");
+        }
       } else if (error.code === 'auth/cancelled-popup-request') {
         // User cancelled - don't show error
         return;
