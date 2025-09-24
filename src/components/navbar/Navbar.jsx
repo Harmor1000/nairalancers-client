@@ -126,7 +126,7 @@ const Navbar = () => {
         <div className="links">
           <div className="desktop-links">
             {/* <span>Nairalancers Business</span> */}
-            <Link className="link" to="/profiles">Browse Profiles</Link>
+            {/* <Link className="link" to="/profiles">Browse Profiles</Link> */}
             <Link className="link" to="/gigs"> Browse Gigs</Link>
             {currentUser?.isAdmin && (
                       <>
@@ -197,7 +197,7 @@ const Navbar = () => {
                     </Link>
                     {currentUser?.isSeller && (
                       <>
-                        <Link className="link" to="/freelancer-dashboard">💼 Dashboard</Link>
+                        <Link className="link" to="/freelancer-dashboard">Dashboard</Link>
                         <Link className="link" to="/mygigs">My Gigs</Link>
                         <Link className="link" to="/add">Add New Gig</Link>
                       </>
@@ -235,8 +235,7 @@ const Navbar = () => {
         {mobileMenuOpen && (
           <div className="mobile-menu">
             {/* <span>Nairalancers Business</span> */}
-            <Link className="link" to="/profiles" onClick={() => setMobileMenuOpen(false)}>Browse Profiles</Link>
-            <Link className="link" to="/gigs" onClick={() => setMobileMenuOpen(false)}>Browse Gigs</Link>
+            
             {currentUser?.isAdmin && (
               <>
                 <Link className="link" to="/admin" onClick={() => setMobileMenuOpen(false)}>Admin</Link>
@@ -258,6 +257,8 @@ const Navbar = () => {
                   />
                   <span>{currentUser?.username}</span>
                 </div>
+                {/* <Link className="link" to="/profiles" onClick={() => setMobileMenuOpen(false)}>Browse Profiles</Link> */}
+                <Link className="link" to="/gigs" onClick={() => setMobileMenuOpen(false)}>Browse Gigs</Link>
                 <Link 
                   className="link" 
                   to={`/${currentUser?.isSeller ? 'seller' : 'buyer'}-profile/${currentUser?._id}`}
@@ -267,7 +268,7 @@ const Navbar = () => {
                 </Link>
                 {currentUser?.isSeller && (
                   <>
-                    <Link className="link" to="/freelancer-dashboard" onClick={() => setMobileMenuOpen(false)}>💼 Dashboard</Link>
+                    <Link className="link" to="/freelancer-dashboard" onClick={() => setMobileMenuOpen(false)}>Dashboard</Link>
                     <Link className="link" to="/mygigs" onClick={() => setMobileMenuOpen(false)}>My Gigs</Link>
                     <Link className="link" to="/add" onClick={() => setMobileMenuOpen(false)}>Add New Gig</Link>
                   </>

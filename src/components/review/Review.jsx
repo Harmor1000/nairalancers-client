@@ -12,6 +12,7 @@ const Review = ({ review, gigOwnerId }) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [reportReason, setReportReason] = useState("");
   const [reportDescription, setReportDescription] = useState("");
+  const [voteNotice, setVoteNotice] = useState(null); // { type: 'success'|'error'|'info', text: string }
   
   const currentUser = getCurrentUser();
   const queryClient = useQueryClient();
@@ -62,9 +63,13 @@ const Review = ({ review, gigOwnerId }) => {
         userVote: data.data.userVote,
       });
       queryClient.invalidateQueries(['reviewVote', review._id]);
+      setVoteNotice({ type: 'success', text: 'Thanks for your feedback!' });
     },
     onError: (error) => {
       console.error('Vote failed:', error);
+      const msg = error?.response?.data?.message ||
+                  (error?.response?.status === 403 ? 'You are not allowed to vote on review helpfulness.' : 'Failed to submit your vote. Please try again.');
+      setVoteNotice({ type: 'error', text: msg });
     },
   });
 
@@ -120,21 +125,30 @@ const Review = ({ review, gigOwnerId }) => {
 
   const handleHelpfulClick = (type) => {
     if (!currentUser) {
-      alert("Please login to vote on reviews");
+      setVoteNotice({ type: 'info', text: 'Please login to vote on reviews.' });
       return;
     }
 
     if (isOwnReview) {
-      alert("You cannot vote on your own review");
+      setVoteNotice({ type: 'info', text: 'You cannot vote on your own review.' });
       return;
     }
 
     if (isGigOwner) {
-      alert("You cannot vote on reviews for your own gig");
+      setVoteNotice({ type: 'info', text: 'You cannot vote on reviews for your own gig.' });
       return;
     }
 
-    if (helpful.userVote === type) return;
+    // Restrict sellers from voting on helpfulness (clients only)
+    if (currentUser?.isSeller) {
+      setVoteNotice({ type: 'error', text: 'Only clients can vote on review helpfulness.' });
+      return;
+    }
+
+    if (helpful.userVote === type) {
+      setVoteNotice({ type: 'info', text: 'You already voted.' });
+      return;
+    }
 
     voteMutation.mutate(type);
   };
@@ -278,6 +292,15 @@ const Review = ({ review, gigOwnerId }) => {
                     {helpful.no > 0 && <span className="vote-count">({helpful.no})</span>}
                   </button>
                 </div>
+                {voteNotice && (
+                  <div
+                    className={`vote-feedback ${voteNotice.type}`}
+                    role="status"
+                    aria-live="polite"
+                  >
+                    {voteNotice.text}
+                  </div>
+                )}
               </div>
               <button 
                 className="report-btn" 

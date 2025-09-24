@@ -170,9 +170,9 @@ const Footer = () => {
               <li>
                 <Link to="/gigs">Find Services</Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/profiles">Find Freelancers</Link>
-              </li>
+              </li> */}
               <li>
                 <Link to="/resources/hiring-guide">How to Hire</Link>
               </li>

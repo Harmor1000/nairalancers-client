@@ -165,6 +165,14 @@
             margin-left: 4px;
           }
         }
+
+        .vote-feedback {
+          margin-left: 8px;
+          font-size: 0.9rem;
+          &.success { color: #1dbf73; }
+          &.error { color: #ff6b6b; }
+          &.info { color: #74767e; }
+        }
       }
     }
 

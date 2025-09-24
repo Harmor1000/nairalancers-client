@@ -329,12 +329,12 @@ const BuyerProfile = () => {
                           {formatLastSeen(user.lastSeen)}
                         </span>
                       </div>
-                      {user.phone && (
+                      {/* {user.phone && (
                         <div className="contact-item">
                           <span className="contact-label">Phone:</span>
                           <span className="contact-value">{user.phone}</span>
                         </div>
-                      )}
+                      )} */}
                     </div>
                   )}
 

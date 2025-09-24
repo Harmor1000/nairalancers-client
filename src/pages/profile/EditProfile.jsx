@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, Link } from "react-router-dom";
 import "./EditProfile.scss";
@@ -7,6 +7,7 @@ import getCurrentUser from "../../utils/getCurrentUser";
 import upload from "../../utils/upload";
 import AutocompleteInput from "../../components/autocomplete/AutocompleteInput";
 import { EditProfileSkeleton } from "../../components/skeleton/Skeleton";
+import { ToastContext } from "../../components/toast/ToastProvider";
 import { 
   searchUniversities, 
   searchFieldsOfStudy, 
@@ -23,6 +24,7 @@ const EditProfile = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const currentUser = getCurrentUser();
+  const toast = useContext(ToastContext);
 
   const [formData, setFormData] = useState({
     firstname: "",
@@ -121,14 +123,14 @@ const EditProfile = () => {
         localStorage.setItem("currentUser", JSON.stringify(updatedUser));
       }
       
-      alert("Profile updated successfully!");
+      toast?.success("Profile updated successfully!");
       // navigate(`/${currentUser.isSeller ? 'seller' : 'buyer'}-profile/${currentUser._id}`);
     },
     onError: (error) => {
       console.error("Update failed:", error);
       console.error("Error response:", error.response?.data);
       const errorMessage = error.response?.data?.message || error.message || "Failed to update profile";
-      alert(`Failed to update profile: ${errorMessage}`);
+      toast?.error(`Failed to update profile: ${errorMessage}`);
     },
   });
 
@@ -138,6 +140,7 @@ const EditProfile = () => {
     onSuccess: () => {
       setVerificationSent(true);
       setShowVerificationModal(true);
+      toast?.success("Verification code sent to your new email address.");
       // Clear any previous email errors since request was successful
       const newErrors = { ...errors };
       delete newErrors.email;
@@ -167,6 +170,7 @@ const EditProfile = () => {
     onSuccess: () => {
       setPhoneVerificationSent(true);
       setShowPhoneVerificationModal(true);
+      toast?.success("Verification code sent to your phone number.");
       // Clear any previous phone errors since request was successful
       const newErrors = { ...errors };
       delete newErrors.phone;
@@ -214,8 +218,7 @@ const EditProfile = () => {
     },
     onError: (error) => {
       const errorMessage = error.response?.data?.message || "Verification failed";
-      // Keep alert for errors since they're critical  
-      alert(`Error: ${errorMessage}`);
+      toast?.error(`Email verification failed: ${errorMessage}`);
     },
   });
 
@@ -247,8 +250,7 @@ const EditProfile = () => {
     },
     onError: (error) => {
       const errorMessage = error.response?.data?.message || "Verification failed";
-      // Keep alert for errors since they're critical  
-      alert(`Error: ${errorMessage}`);
+      toast?.error(`Phone verification failed: ${errorMessage}`);
     },
   });
 
@@ -555,13 +557,13 @@ const EditProfile = () => {
       // Validate file type
       const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
       if (!validTypes.includes(file.type)) {
-        alert('Please select a valid image file (JPEG, PNG, GIF, or WebP)');
+        toast?.error('Please select a valid image file (JPEG, PNG, GIF, or WebP)');
         return;
       }
 
       // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        alert('Image size should be less than 5MB');
+        toast?.error('Image size should be less than 5MB');
         return;
       }
 
@@ -732,19 +734,19 @@ const EditProfile = () => {
     
     // Validate all fields
     if (!validateAllFields()) {
-      alert("Please fix the validation errors before submitting.");
+      toast?.warning("Please fix the validation errors before submitting.");
       return;
     }
     
     // Check if email has changed and needs verification (unless already successfully verified)
     if (emailChanged && !verificationSent && !emailVerificationSuccess) {
-      alert("Please verify your new email address before saving your profile.");
+      toast?.info("Please verify your new email address before saving your profile.");
       return;
     }
 
     // Check if phone has changed and needs verification (unless already successfully verified)
     if (phoneChanged && !phoneVerificationSent && !phoneVerificationSuccess) {
-      alert("Please verify your new phone number before saving your profile.");
+      toast?.info("Please verify your new phone number before saving your profile.");
       return;
     }
 
@@ -792,7 +794,7 @@ const EditProfile = () => {
       updateMutation.mutate(updateData);
     } catch (error) {
       console.error("Upload failed:", error);
-      alert("Failed to upload image. Please try again.");
+      toast?.error("Failed to upload image. Please try again.");
     } finally {
       setUploading(false);
     }
@@ -1541,20 +1543,20 @@ const EditProfile = () => {
                   </div>
 
                   <div className="form-grid">
-                                         <div className="form-group">
-                       <label>Hourly Rate (₦)</label>
-                       <input
-                         type="number"
-                         value={formData.hourlyRate}
-                         onChange={(e) => handleInputChange("hourlyRate", e.target.value)}
-                         onBlur={() => handleBlur("hourlyRate")}
-                         placeholder="5000"
-                         min="100"
-                         step="100"
-                         className={touched.hourlyRate && errors.hourlyRate ? "error" : ""}
-                       />
-                       <ErrorMessage field="hourlyRate" touched={touched} errors={errors} />
-                     </div>
+                    {/* <div className="form-group">
+                      <label>Hourly Rate (₦)</label>
+                      <input
+                        type="number"
+                        value={formData.hourlyRate}
+                        onChange={(e) => handleInputChange("hourlyRate", e.target.value)}
+                        onBlur={() => handleBlur("hourlyRate")}
+                        placeholder="5000"
+                        min="100"
+                        step="100"
+                        className={touched.hourlyRate && errors.hourlyRate ? "error" : ""}
+                      />
+                      <ErrorMessage field="hourlyRate" touched={touched} errors={errors} />
+                    </div> */}
 
                     <div className="form-group">
                       <label>Response Time</label>

@@ -373,12 +373,12 @@ const SellerProfile = () => {
                         {formatLastSeen(user.lastSeen)}
                       </span>
                     </div>
-                    {user._id === currentUser._id && (user.phone && (
+                    {/* {user._id === currentUser._id && (user.phone && (
                       <div className="contact-item">
                         <span className="contact-label">Phone:</span>
                         <span className="contact-value">{user.phone}</span>
                       </div>
-                    ))}
+                    ))} */}
                   </div>
 
                   {/* Social Links */}
